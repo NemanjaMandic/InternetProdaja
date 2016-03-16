@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="672.0" prefWidth="1039.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ProdajaController">
+   <children>
+      <Label layoutX="65.0" layoutY="42.0" text="Ime" />
+      <Label layoutX="44.0" layoutY="88.0" text="Prezime" />
+      <Label layoutX="46.0" layoutY="169.0" text="Adresa" />
+      <Label layoutX="49.0" layoutY="327.0" text="Datum" />
+      <Label layoutX="51.0" layoutY="274.0" text="Brzina" />
+      <TextField fx:id="fnameField" layoutX="104.0" layoutY="38.0" prefHeight="25.0" prefWidth="214.0" />
+      <TextField fx:id="lnameField" layoutX="104.0" layoutY="84.0" prefHeight="25.0" prefWidth="214.0" />
+      <TextField fx:id="addressField" layoutX="104.0" layoutY="174.0" prefHeight="25.0" prefWidth="214.0" />
+      <ComboBox fx:id="speedCombo" layoutX="101.0" layoutY="270.0" prefHeight="25.0" prefWidth="167.0" promptText="Mbit" />
+      <DatePicker fx:id="date" layoutX="101.0" layoutY="323.0" prefHeight="25.0" prefWidth="167.0" />
+      <Button layoutX="49.0" layoutY="409.0" mnemonicParsing="false" onAction="#save" prefHeight="35.0" prefWidth="76.0" text="Sačuvaj" />
+      <Label layoutX="50.0" layoutY="132.0" text="Grad" />
+      <TextField fx:id="cityTextField" layoutX="104.0" layoutY="128.0" prefHeight="25.0" prefWidth="214.0" />
+      <Label layoutX="50.0" layoutY="222.0" text="Email" />
+      <TextField fx:id="emailTextField" layoutX="104.0" layoutY="218.0" prefHeight="25.0" prefWidth="214.0" />
+      <TableView fx:id="salesTable" layoutX="346.0" layoutY="42.0" prefHeight="414.0" prefWidth="688.0">
+        <columns>
+          <TableColumn fx:id="id" prefWidth="75.0" text="ID" />
+          <TableColumn fx:id="fname" prefWidth="75.0" text="Ime" />
+            <TableColumn fx:id="lname" prefWidth="75.0" text="Prezime" />
+            <TableColumn fx:id="city" prefWidth="75.0" text="Grad" />
+            <TableColumn fx:id="address" prefWidth="75.0" text="Adresa" />
+            <TableColumn fx:id="email" prefWidth="75.0" text="Email" />
+            <TableColumn fx:id="speed" prefWidth="75.0" text="Brzina" />
+            <TableColumn fx:id="dateCol" prefWidth="75.0" text="Datum" />
+            <TableColumn fx:id="serialNo" prefWidth="75.0" text="Serijski Broj" />
+        </columns>
+      </TableView>
+      <Button layoutX="159.0" layoutY="409.0" mnemonicParsing="false" onAction="#pregled" prefHeight="35.0" prefWidth="76.0" text="Load" />
+   </children>
+</AnchorPane>
