@@ -112,20 +112,6 @@ public class ProdajaTableController implements Initializable, TableDAO {
       }
         return null;
     }
-    @Override
-    public Connection getConnection() {
-         try{
-            Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/internet_sale", "root","");
-            return conn;
-        }catch(SQLException ex){
-            System.err.println("Error");
-            ex.printStackTrace();
-        } catch (ClassNotFoundException ex) {
-           System.err.println("Error");
-            ex.printStackTrace();
-        }
-        return null;
-    }
+   
     
 }

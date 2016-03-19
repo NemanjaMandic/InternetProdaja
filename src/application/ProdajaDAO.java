@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author nemus
  */
-public interface ProdajaDAO extends Connectable{
+public interface ProdajaDAO{
     
     public void insert(ProdajaModel prodaja) throws Exception;
     boolean update(ProdajaModel prodaja) throws Exception;

@@ -89,21 +89,7 @@ public class ProdajaController implements Initializable, ProdajaDAO {
     private PreparedStatement ps;
     private ResultSet rs;
      
-    @Override
-     public Connection getConnection(){
-        try{
-            Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/internet_sale", "root","");
-            return conn;
-        }catch(SQLException ex){
-            System.err.println("Error");
-            ex.printStackTrace();
-        } catch (ClassNotFoundException ex) {
-           System.err.println("Error");
-            ex.printStackTrace();
-        }
-        return null;
-    }
+   
     @FXML
     private void save(ActionEvent event) throws Exception {
     
@@ -120,24 +106,20 @@ public class ProdajaController implements Initializable, ProdajaDAO {
         prod.getSerialNo();
         ProdajaDAOImpl impl = new ProdajaDAOImpl();
        
-       getConnection();
+     
        // impl.getConnection();
       //  impl.insert(prod);
         insert(prod);
       //  insert(prod);
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Information");
-        alert.setHeaderText(null);
-        alert.setContentText("Podatak o prodaji je uspesno unet.");
-        alert.showAndWait();
-        clearFields();
+      
+       
         
       // dbcon.closeConnection();
         
     }
     @FXML
     private void pregled(ActionEvent event) throws IOException{
-        getConnection();
+       
         getAllSaleRecord();
     }
     private void clearFields(){
@@ -162,12 +144,13 @@ public class ProdajaController implements Initializable, ProdajaDAO {
        speed.setCellValueFactory(new PropertyValueFactory<>("speed"));
        dateCol.setCellValueFactory(new PropertyValueFactory<>("date"));
        serialNo.setCellValueFactory(new PropertyValueFactory<>("serialNo"));
-       salesTable.setItems(data);
+       //salesTable.setItems blah blah
    }    
 
     @Override
     public void insert(ProdajaModel prodaja) throws Exception {
-        String sql = "INSERT INTO sales(firstName, lastName, city, address, email, speed, date, serialNo) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+      conn = DBConnection.DBConnector();
+      String sql = "INSERT INTO sales(firstName, lastName, city, address, email, speed, date, serialNo) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
       ps = conn.prepareStatement(sql);
       
       ps.setString(1, prodaja.getFirstName());
@@ -180,6 +163,15 @@ public class ProdajaController implements Initializable, ProdajaDAO {
       ps.setString(7, ((TextField)dateField.getEditor()).getText());
       ps.setLong(8, prodaja.getSerialNo());
       ps.executeUpdate();
+      
+       Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information");
+        alert.setHeaderText(null);
+        alert.setContentText("Podatak o prodaji je uspesno unet.");
+        alert.showAndWait();
+        clearFields();
+        
+      getAllSaleRecord();
      ps.close();
     }
 
@@ -195,8 +187,11 @@ public class ProdajaController implements Initializable, ProdajaDAO {
 
     @Override
     public List<ProdajaModel> getAllSaleRecord() {
-        ProdajaModel prod = new ProdajaModel();
+      
       try{
+            conn = DBConnection.DBConnector();
+            
+             data.clear();
           String sql = "SELECT * FROM sales";
           ps = conn.prepareStatement(sql);
           rs = ps.executeQuery();
@@ -213,7 +208,7 @@ public class ProdajaController implements Initializable, ProdajaDAO {
                       rs.getLong("serialNo")
               ));
               
-             
+             salesTable.setItems(data);
           }
           ps.close();
           rs.close();

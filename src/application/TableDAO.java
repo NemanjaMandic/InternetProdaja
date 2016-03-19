@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author nemus
  */
-public interface TableDAO extends Connectable{
+public interface TableDAO {
    
      List<ProdajaModel> getAllSaleRecord();
 }
