@@ -29,7 +29,7 @@ public class ProdajaModel implements Serializable {
     private final SimpleStringProperty date = new SimpleStringProperty("");
     
    private static final long LOWER_RANGE = 1;
-   private static final long UPPER_RANGE = 1000000000;
+    private static final long UPPER_RANGE = 1000000000;
      private Random randomNo = new Random();
     
      private long serialNo = LOWER_RANGE + (long)(randomNo.nextDouble() * (UPPER_RANGE - LOWER_RANGE));
@@ -137,7 +137,7 @@ public class ProdajaModel implements Serializable {
        this.serialNo=serialNo;
    }
     public long getSerialNo(){
-        return  serialNo;
+        return serialNo;
     }
 
     public String getDate(){

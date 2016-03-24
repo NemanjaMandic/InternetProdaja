@@ -14,8 +14,8 @@ import java.util.List;
 public interface ProdajaDAO{
     
     public void insert(ProdajaModel prodaja) throws Exception;
-    boolean update(ProdajaModel prodaja) throws Exception;
-    boolean delete(ProdajaModel prodaja) throws Exception;
+    public void update(ProdajaModel prodaja) throws Exception;
+    public void delete(ProdajaModel prodaja) throws Exception;
     List<ProdajaModel> getAllSaleRecord();
       
    

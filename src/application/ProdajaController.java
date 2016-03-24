@@ -13,6 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,6 +25,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
@@ -47,13 +49,13 @@ public class ProdajaController implements Initializable, ProdajaDAO {
     @FXML private TextField cityTextField;
     @FXML private TextField addressField;
     @FXML private TextField emailTextField;
-    
+    @FXML private TextField idTextField;
     @FXML private ComboBox<String> speedCombo;
     
     @FXML private TableView<ProdajaModel> salesTable;
     
     
-     @FXML
+    @FXML
     private TableColumn<ProdajaModel, Long> id;
 
 
@@ -104,23 +106,40 @@ public class ProdajaController implements Initializable, ProdajaDAO {
         prod.setSpeed(speedCombo.getValue());
         prod.setDate(dateField.getValue().toString());
         prod.getSerialNo();
-        ProdajaDAOImpl impl = new ProdajaDAOImpl();
        
-     
-       // impl.getConnection();
-      //  impl.insert(prod);
+       
         insert(prod);
-      //  insert(prod);
-      
-       
+     
         
-      // dbcon.closeConnection();
-        
+    }
+    @FXML 
+    private void delete(ActionEvent event){
+        ProdajaModel prod = new ProdajaModel();
+        prod.setId(Long.parseLong(idTextField.getText()));
+        try {
+            delete(prod);
+        } catch (Exception ex) {
+            Logger.getLogger(ProdajaController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    @FXML
+    private void edit(ActionEvent event){
+        ProdajaModel prod = new ProdajaModel();
+        prod.setId(Long.parseLong(idTextField.getText()));
+        try{
+            update(prod);
+        } catch (Exception ex) {
+            Logger.getLogger(ProdajaController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     @FXML
     private void pregled(ActionEvent event) throws IOException{
        
         getAllSaleRecord();
+    }
+    @FXML
+    private void fetchDataFromTable(ActionEvent event){
+        List selected = (List) salesTable.getSelectionModel();
     }
     private void clearFields(){
         fnameField.clear();
@@ -144,7 +163,7 @@ public class ProdajaController implements Initializable, ProdajaDAO {
        speed.setCellValueFactory(new PropertyValueFactory<>("speed"));
        dateCol.setCellValueFactory(new PropertyValueFactory<>("date"));
        serialNo.setCellValueFactory(new PropertyValueFactory<>("serialNo"));
-       //salesTable.setItems blah blah
+       
    }    
 
     @Override
@@ -176,13 +195,54 @@ public class ProdajaController implements Initializable, ProdajaDAO {
     }
 
     @Override
-    public boolean update(ProdajaModel prodaja) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void update(ProdajaModel prodaja) throws Exception {
+       conn = DBConnection.DBConnector();
+      String sql = "UPDATE sales SET firstName=?, lastName=?, city=?, address=?, email=?, speed=?, date=?, serialNo=? WHERE id='"+prodaja.getId()+"'";
+      ps = conn.prepareStatement(sql);
+      
+      ps.setString(1, prodaja.getFirstName());
+      ps.setString(2, prodaja.getLastName());
+      ps.setString(3, prodaja.getCity());
+      ps.setString(4, prodaja.getAddress());
+      ps.setString(5, prodaja.getEmail());
+      ps.setString(6, prodaja.getSpeed());
+    
+      ps.setString(7, ((TextField)dateField.getEditor()).getText());
+      ps.setLong(8, prodaja.getSerialNo());
+      ps.executeUpdate();
+      
+       Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information");
+        alert.setHeaderText(null);
+        alert.setContentText("Podatak je izmenjen.");
+        alert.showAndWait();
+        clearFields();
+        
+      getAllSaleRecord();
+     ps.close();
     }
 
     @Override
-    public boolean delete(ProdajaModel prodaja) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void delete(ProdajaModel prodaja) throws Exception {
+       conn = DBConnection.DBConnector();
+       
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Potvrdi");
+        alert.setHeaderText(null);
+        alert.setContentText("Obriši podatak ?");
+       Optional<ButtonType>action = alert.showAndWait();
+        if(action.get() == ButtonType.OK){
+            String sql = "DELETE FROM sales WHERE id=?";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, Long.toString(prodaja.getId()));
+        
+            ps.executeUpdate();
+            ps.close();
+        }
+       
+       
+       clearFields();
+       getAllSaleRecord();
     }
 
     @Override
